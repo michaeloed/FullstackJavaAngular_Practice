@@ -1,0 +1,23 @@
+<h1>ProductList</h1>
+
+<table class="table">
+  <thead class="table-dark">
+    <tr>
+      <th></th>
+      <th>Name</th>
+      <th>Price</th>
+      <th>Units in stock</th>
+      <th>Date created</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let product of ProductList">
+      <td class="align-middle"><img src="{{ product.imageUrl }}" height="50"></td>
+      <td class="align-middle">{{ product.name }}</td>
+      <td class="align-middle">{{ product.unitPrice | currency: 'USD' }}</td>
+      <td class="align-middle">{{ product.unitsInStock }}</td>
+      <td class="align-middle">{{ product.dateCreated | date: 'dd.MM.yyyy' }}</td>
+    </tr>
+  </tbody>
+
+</table>
