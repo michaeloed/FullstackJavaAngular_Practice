@@ -1,0 +1,5 @@
+<h1>ProductList</h1>
+
+<p *ngFor="let product of ProductList">
+  {{ product.name }}: {{ product.unitPrice | currency:'EUR' }} (Created: {{product.dateCreated | date: 'dd.MM.yyyy'}})
+</p>
