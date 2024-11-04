@@ -12,6 +12,7 @@ export class ProductListComponent {
 
   ProductList: Product[] = [];
   currentCategoryId: number = 1;
+  searchMode: Boolean = false;
 
   constructor(private productService: ProductService,
               private route: ActivatedRoute) { }
@@ -23,14 +24,28 @@ export class ProductListComponent {
   }
 
   private listProducts() {
+    this.searchMode = this.route.snapshot.paramMap.has('keyword');
+    if (this.searchMode) {
+      this.handleSearchProducts();
+    }
+    else {
+      this.handleListProducts();
+    }
+  }
+
+  handleListProducts() {
     const hasCategoryId: Boolean = this.route.snapshot.paramMap.has('id');
     if (hasCategoryId) {
       this.currentCategoryId = +this.route.snapshot.paramMap.get('id')!;
-    }
-    else {
+    } else {
       this.currentCategoryId = 1;
     }
     this.productService.getProductList(this.currentCategoryId).subscribe(
+      data => this.ProductList = data);
+  }
+
+  private handleSearchProducts() {
+    this.productService.searchProducts(this.route.snapshot.paramMap.get('keyword')!).subscribe(
       data => this.ProductList = data);
   }
 }
