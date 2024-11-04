@@ -38,6 +38,11 @@ export class ProductService {
     return this.httpClient.get<GetResponse>(searchUrl)
       .pipe(map(response => response._embedded.products));
   }
+
+  getProduct(id: number): Observable<Product> {
+    const searchUrl: string = `${this.productsUrl}/${id}`;
+    return this.httpClient.get<Product>(searchUrl);
+  }
 }
 
 interface GetResponse {
