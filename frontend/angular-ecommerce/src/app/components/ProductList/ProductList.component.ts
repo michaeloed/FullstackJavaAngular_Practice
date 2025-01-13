@@ -12,7 +12,12 @@ export class ProductListComponent {
 
   ProductList: Product[] = [];
   currentCategoryId: number = 1;
+  private previousCategoryID: number = 1;
   searchMode: Boolean = false;
+
+  page: number = 1;
+  pageSize: number = 10;
+  totalElements: number = 0;
 
   constructor(private productService: ProductService,
               private route: ActivatedRoute) { }
@@ -23,7 +28,7 @@ export class ProductListComponent {
     });
   }
 
-  private listProducts() {
+  listProducts() {
     this.searchMode = this.route.snapshot.paramMap.has('keyword');
     if (this.searchMode) {
       this.handleSearchProducts();
@@ -40,8 +45,21 @@ export class ProductListComponent {
     } else {
       this.currentCategoryId = 1;
     }
-    this.productService.getProductList(this.currentCategoryId).subscribe(
-      data => this.ProductList = data);
+    // Check if we have a different category id. If so set page number to 1
+    if (this.previousCategoryID != this.currentCategoryId) {
+      this.page = 1;
+    }
+    this.previousCategoryID = this.currentCategoryId;
+    console.log(`currentCategoryId=${this.currentCategoryId}, page=${this.page}`);
+    this.productService.getProductListPaginate(this.page - 1,
+                                               this.pageSize,
+                                               this.currentCategoryId)
+      .subscribe(data => {
+        this.ProductList = data._embedded.products;
+        this.page = data.page.number + 1;
+        this.pageSize = data.page.size;
+        this.totalElements = data.page.totalElements;
+      });
   }
 
   private handleSearchProducts() {

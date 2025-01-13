@@ -8,6 +8,7 @@ import {Routes, RouterModule} from "@angular/router";
 import {MenubarComponent} from "./components/Menubar/Menubar.component";
 import {SearchbarComponent} from "./components/Searchbar/Searchbar.component";
 import {ProductDetailsComponent} from "./components/ProductDetails/ProductDetails.component";
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
 const routes: Routes = [
   {path: 'search/:keyword', component: ProductListComponent},
@@ -30,7 +31,8 @@ const routes: Routes = [
   imports: [
     RouterModule.forRoot(routes),
     BrowserModule,
-    HttpClientModule
+    HttpClientModule,
+    NgbModule
   ],
   providers: [ProductService],
   bootstrap: [AppComponent]
