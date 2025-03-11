@@ -1,49 +1,49 @@
 <div class="main-content">
-  <div class="section-content section-content-p30">
-    <div class="container-fluid">
-      <div class="row">
-        <div *ngFor="let product of ProductList" class="col-md-3">
-          <div class="product-box">
-            <a routerLink="/products/{{ product.id }}">
-              <img src="{{ product.imageUrl }}" class="img-responsive">
-            </a>
-            <a routerLink="/products/{{ product.id }}" class="text-decoration-none">
-              <h1>{{ product.name }}</h1>
-            </a>
-            <!--<h2>{{ product.description }}</h2>-->
-            <div class="price">{{ product.unitPrice | currency: 'USD' }}</div>
-            <a href="#" class="primary-btn">Add to cart</a>
-          </div>
-        </div>
-
-        <!-- if products empty then display a message -->
-        <div *ngIf="ProductList?.length==0" class="alert alert-warning col-md-12" role="alert">
-          No products found.
-        </div>
-      </div>
-
-      <!-- begin footer -->
-      <div class="footer-pagination">
-        <div class="row">
-          <div class="col-md-6">
-
-          </div>
-          <div class="col-md-6">
+    <div class="section-content section-content-p30">
+        <div class="container-fluid">
             <div class="row">
-              <div class="col-md-9" style="padding-left: 30%">
-                <ngb-pagination [(page)]="page"
-                                [pageSize]="pageSize"
-                                [collectionSize]="totalElements"
-                                (pageChange)="listProducts()">
+                <div *ngFor="let product of ProductList" class="col-md-3">
+                    <div class="product-box">
+                        <a routerLink="/products/{{ product.id }}">
+                            <img src="{{ product.imageUrl }}" class="img-responsive">
+                        </a>
+                        <a routerLink="/products/{{ product.id }}" class="text-decoration-none">
+                            <h1>{{ product.name }}</h1>
+                        </a>
+                        <!--<h2>{{ product.description }}</h2>-->
+                        <div class="price">{{ product.unitPrice | currency: 'USD' }}</div>
+                        <button (click)="addToCart(product)" class="btn btn-primary btn-sm">Add to cart</button>
+                    </div>
+                </div>
 
-                </ngb-pagination>
-              </div>
+                <!-- if products empty then display a message -->
+                <div *ngIf="ProductList?.length==0" class="alert alert-warning col-md-12" role="alert">
+                    No products found.
+                </div>
             </div>
-          </div>
-        </div>
-      </div>
 
-      <!-- end footer -->>
+            <!-- begin footer -->
+            <div class="footer-pagination">
+                <div class="row">
+                    <div class="col-md-6">
+
+                    </div>
+                    <div class="col-md-6">
+                        <div class="row">
+                            <div class="col-md-9" style="padding-left: 30%">
+                                <ngb-pagination [(page)]="page"
+                                                [pageSize]="pageSize"
+                                                [collectionSize]="totalElements"
+                                                (pageChange)="listProducts()">
+
+                                </ngb-pagination>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- end footer -->
+        </div>
     </div>
-  </div>
 </div>

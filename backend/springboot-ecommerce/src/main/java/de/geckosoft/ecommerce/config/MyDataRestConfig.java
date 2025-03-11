@@ -12,13 +12,17 @@ import org.springframework.http.HttpMethod;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Set;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 @Configuration
 public class MyDataRestConfig implements RepositoryRestConfigurer {
 
     private EntityManager entityManager;
+    private final Logger log = Logger.getLogger(this.getClass().getName());
 
     @Autowired
     public MyDataRestConfig(EntityManager _entEntityManager) {
@@ -28,12 +32,15 @@ public class MyDataRestConfig implements RepositoryRestConfigurer {
     @Override
     public void configureRepositoryRestConfiguration(RepositoryRestConfiguration config, CorsRegistry corsRegistry) {
         HttpMethod[] unSupportedActions = { HttpMethod.PUT, HttpMethod.POST, HttpMethod.DELETE };
+
+        log.log(Level.INFO, "Setting up RepositoryRestConfiguration. Not allowed methods: " + Arrays.toString(unSupportedActions));
+
         // disable HTTP methods for Product: PUT, POST, DELETE
         config.getExposureConfiguration()
                 .forDomainType(Product.class)
                 .withItemExposure((metdata, httpMethods) -> httpMethods.disable(unSupportedActions))
                 .withCollectionExposure((metdata, httpMethods) -> httpMethods.disable(unSupportedActions));
-        // disable HTTP methods for Product: PUT, POST, DELETE
+        // disable HTTP methods for ProductCategory: PUT, POST, DELETE
         config.getExposureConfiguration()
                 .forDomainType(ProductCategory.class)
                 .withItemExposure((metdata, httpMethods) -> httpMethods.disable(unSupportedActions))
@@ -42,6 +49,11 @@ public class MyDataRestConfig implements RepositoryRestConfigurer {
         // expose the ids
         exposeIds(config);
 
+
+        String allowedOrigins = "https://localhost:4200";
+        log.log(Level.INFO, "Setting up CORS configuration. Allowed origins: " + allowedOrigins);
+        // configure cors mapping
+        corsRegistry.addMapping("/api/**").allowedOrigins(allowedOrigins);
     }
 
     private void exposeIds(RepositoryRestConfiguration config) {
